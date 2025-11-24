@@ -10,7 +10,7 @@ This project provides a complete solution for automating window blinds with prec
 
 ### Components
 
-- **PD-Stepper Controller Board** - ESP32-based stepper motor controller
+- **PD-Stepper Kit** - ESP32-based stepper motor controller (includes board, encoder magnet, motor cables, and aluminium spacer)
 - **Stepper Motor** - NEMA 17 or compatible
 - **Custom Power PCB** - Distributes power to the PD-Stepper board via spring terminals connected to internal pads
 - **3D-Printed Mounting Hardware** - Complete blind mounting assembly
