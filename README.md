@@ -72,7 +72,7 @@ Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your m
 
 ### 4. Motor Housing
 
-Pass the motor cable through the cable hole, then attach the base plate to the motor using two 5mm standoffs and two 6mm standoffs. The outer piece then pushes over the standoffs and guide posts.
+Pass the motor cable through the cable hole, then attach the base plate to the motor using two 5mm standoffs and two 6mm standoffs. You will have to turn the standoffs by a few degrees to the correct orientation such that the outer piece fits over them. The outer piece itself can be used as a spanner for that purpose. The outer piece then pushes over the standoffs and guide posts.
 
 ![Motor Assembly](images/PXL_20250329_155254375.MP.webp)
 
