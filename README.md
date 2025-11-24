@@ -17,6 +17,7 @@ This project provides a complete solution for automating window blinds with prec
 - **M3 Hex Standoffs and Nuts** - For assembly ([example](https://www.amazon.co.uk/dp/B08FZKLYSB))
 - **M3 Countersunk Bolts** - For mounting ([example](https://www.amazon.co.uk/dp/B0CPDQJ7ZF))
 - **JST-PH 2.0mm Sockets** - 3-pin connectors for power PCB ([example](https://www.amazon.co.uk/dp/B0CDG95RDT))
+- **2mm Acrylic Rod** - For light guides ([example](https://www.amazon.co.uk/dp/B0DQ1757SP))
 
 ### Power Distribution
 
