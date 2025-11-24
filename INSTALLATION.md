@@ -20,7 +20,7 @@ Feed the power cable through the wall cavity to reach the motor from within the 
 
 ## 4. Terminate Power Cable
 
-Bring the power cable through the gap in the base plate alongside the motor cable, and terminate it in a 3-pin JST-PH plug.
+Bring the power cable through the gap in the base plate alongside the motor cable, and terminate it in a 3-pin JST-PH plug. Vcc is the middle pin of the 3-pin plug, and GND is the pin closest to the edge. An optional reed switch can be connected between GND and the NTC pin, which is closest to the centre of the assembly.
 
 ## 5. Connect Assembly
 
