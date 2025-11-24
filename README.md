@@ -35,7 +35,7 @@ KiCad project files are located in the `power-pcb/` directory. Gerber files for 
 
 For PCB assembly through JLCPCB, the `jlcbom.csv` file contains the spring terminal part number in the required format.
 
-![Power PCB](PCB.png)
+![Power PCB](images/PCB.png)
 
 ## 3D Design
 
@@ -63,7 +63,7 @@ The mounting hardware consists of multiple printed parts that work together to c
 - **STL Files** - Individual parts in `3d-design/STL/`
 - **3MF Files** - Individual parts in `3d-design/3mf/`
 
-![3D Design](FreeCAD.png)
+![3D Design](images/FreeCAD.png)
 
 ## Assembly
 
@@ -71,19 +71,19 @@ The mounting hardware consists of multiple printed parts that work together to c
 
 The power PCB is designed to make contact with the back of the PD-Stepper board, using the terminals shown.
 
-![Power PCB Terminals](image.webp)
+![Power PCB Terminals](images/image.webp)
 
 The JST-PH socket is fitted at right angles to the board with its pins laying flat on the copper, so manufacturers like JLCPCB won't be able to build that. Using the jig as shown to position the socket and PCB, solder them by hand.
 
-![PCB Jig](PXL_20250314_105317922.webp)
+![PCB Jig](images/PXL_20250314_105317922.webp)
 
 ### 2. Outer PCB Assembly
 
 First, attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and fit the cover piece on top. Then fit the power PCB into the outer piece, and sandwich them together so that the spring terminals make contact. Screw that piece together using two 15mm bolts and half-width M3 nuts. Finally, affix the heatsink to the full assembly through the gap in the cover.
 
-![PCB Assembly](PXL_20250329_152729706.MP.webp)
+![PCB Assembly](images/PXL_20250329_152729706.MP.webp)
 
-![Completed Outer Assembly](PXL_20250329_152741348.MP.webp)
+![Completed Outer Assembly](images/PXL_20250329_152741348.MP.webp)
 
 ### 3. Build Motor Cable
 
@@ -93,7 +93,7 @@ Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your m
 
 Pass the motor cable through the cable hole, then attach the base plate to the motor using two 5mm standoffs and two 6mm standoffs. The outer piece then pushes over the standoffs and guide posts.
 
-![Motor Assembly](PXL_20250329_155254375.MP.webp)
+![Motor Assembly](images/PXL_20250329_155254375.MP.webp)
 
 ### 5. Gear Installation
 
@@ -103,4 +103,4 @@ Push the gear onto the motor shaft, and push the encoder magnet from the PD-Step
 
 Two 25mm bolts go through the other corners of the outer assembly to secure it to the backing plate, with the blind cord inside.
 
-![Final Assembly](PXL_20250329_202715522.MP.webp)
+![Final Assembly](images/PXL_20250329_202715522.MP.webp)
