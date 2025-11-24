@@ -34,4 +34,4 @@ Fit the blind cord to the complete assembly and connect the power cable as shown
 
 Mount the complete assembly in the wall cavity and screw in the four corners with self-tapping screws.
 
-![Final Installation](images/finalimage.webp)
+![Final Installation](images/PXL_20251124_092025537.jpg)

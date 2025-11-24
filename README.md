@@ -91,6 +91,8 @@ Two 25mm bolts go through the other corners of the outer assembly to secure it t
 
 For instructions on mounting the completed assembly into your window frame, see [INSTALLATION.md](INSTALLATION.md).
 
+![Installation](images/PXL_20251124_092025537.jpg)
+
 ## Programming
 
 ESPHome configuration examples are provided in the `esphome/` directory. The `landing-blind-1.yaml` file shows a complete configuration with the following substitutions:
