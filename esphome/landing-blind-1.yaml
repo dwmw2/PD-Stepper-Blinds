@@ -8,8 +8,6 @@ substitutions:
   max_speed: "800"
   stallguard_threshold: "60"
   pd_voltage: "15"
-  domo_blind: 922
-  report_blind: 1
 
 packages:
   blind: !include blind.yaml

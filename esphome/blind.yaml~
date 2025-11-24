@@ -1,0 +1,599 @@
+# Based on https://github.com/joshr120/PD-Stepper/blob/main/Software/ESPHome/PD-Stepper-Blinds-Advanced.yaml
+# (GPLv3)
+
+# Tuning...
+#
+# Total motor speed (steps/s / microsteps) should be fast enough to be useful,
+# but slow enough not to be too noisy. Too fast may also make the cord skip on
+# the gear when it should be stalling.
+#
+# If steps/s is too high (regardless of microsteps), the Power Good light randomly
+# cuts out and the board resets (with three different power supplies). Decreasing
+# run_current doesn't seem to make any difference to that.
+#
+# StallGuard should be sensitive (high) enough to stop quickly when it reaches
+# the end stop (although that's less important with the reed switch hooked up),
+# but low enough not to trigger if starting up in the high-torque region when
+# the blind is almost, but not quite fully up.
+#
+# Making the re-homing run at half speed helps with the latter, as does lower
+# acceleration.
+#
+# Increasing microsteps decreases torque, as does decreasing the current. This
+# affects the StallGuard settings.
+#
+# Microsteps (between 1 and 4 at least) don't seem to make any noticeable difference
+# to the smoothness of operation.
+#
+# Setting standstill_mode to coil_short_ls prevents high back EMF if someone
+# manually turns the blinds.
+
+esp32:
+  board: esp32-s3-devkitc-1
+  framework:
+    type: esp-idf
+    version: recommended
+
+wifi:
+  output_power: 20.5dB
+
+esphome:
+  name: ${name}
+  platformio_options:
+    board_build.flash_mode: dio
+    upload_speed: 921600
+  on_boot:
+    - lambda: |
+           auto t = id(sntp_time).now();
+           ESP_LOGE("on_boot", "%svalid %04d-%02d-%02d %02d:%02d:%02d, is_dst %d",
+           t.is_valid() ? "": "in", t.year, t.month, t.day_of_month,
+           t.hour, t.minute, t.second, t.is_dst);
+    - tmc2209.configure:
+        microsteps: ${microsteps}
+        interpolation: true
+        tcool_threshold: 400
+    - tmc2209.stallguard:
+        threshold: ${stallguard_threshold}   #set lower if stall gaurd triggering too often
+    - tmc2209.currents:
+        ihold: 0
+        tpowerdown: 0
+        iholddelay: 0
+        # irun: 16
+        run_current: ${run_current}  #Set your desired current here (800m = 800mA, 1 = 1A etc.)
+        standstill_mode: coil_short_ls
+
+     # set PD voltage    # 5V  9V  12V  15V  20V
+     #  CFG1             # 1   0    0    0    0
+     #  CFG2             # -   0    0    1    1
+     #  CFG3             # -   0    1    1    0
+    - lambda: |-
+         int voltage = ${pd_voltage}; // 5, 9, 12, 15 or 20.
+         bool cfg1 = false, cfg2 = false, cfg3 = false;
+         if (voltage == 5) {
+            cfg1 = true;
+         } else if (voltage == 9) {
+            // all off;
+         } else if (voltage == 12) {
+            cfg3 = true;
+         } else if (voltage == 15) {
+            cfg2 = cfg3 = true;
+         } else if (voltage == 20) {
+            cfg2 = true;
+         } else ESP_LOGE("USB-PD", "Invalid voltage %dV selected", voltage);
+         id(CFG1_pin).set_state(cfg1);
+         id(CFG2_pin).set_state(cfg2);
+         id(CFG3_pin).set_state(cfg3);
+
+    - delay: 0.5s
+    - lambda: id(sensored_home_pos) = id(encoder)->get_state();  # Set the home position to power on position
+    # - button.press: home
+
+packages:
+  base: !include base.yaml
+
+# Log too much, and the encoder can miss revolutions.
+logger:
+  level: INFO
+
+# Close the blind at sunset. Open it at 07:30 or sunrise, whichever is later.
+time:
+  - id: !extend sntp_time
+    on_time:
+      - seconds: 0
+        minutes: 30
+        hours: 7
+        then:
+          lambda: |
+            if (id(sol).is_above_horizon())
+              id(pd_blinds)->make_call().set_command_open().perform();
+
+      # The on_sunrise and on_sunset triggers are very sloppy; they are a PollingComponent
+      # which checks every 60 seconds, starting when the device powers up. This means that
+      # all blinds in the same room might decide to open or close up to a minute apart from
+      # each other. Instead, we implement our own loop which checks the state every second,
+      # which means they should all go up/down nicely in sync at the appropriate moment.
+      # https://github.com/esphome/esphome/issues/11820
+      - seconds: /1
+        then:
+          - lambda: |-
+              auto t = id(sntp_time).now();
+              if (!t.is_valid())
+                  return;
+
+              int sunup = id(sol).is_above_horizon();
+              if (sunup == id(prev_sunup_))
+                 return;
+
+              if (id(prev_sunup_) == -1) {
+                 // We know the state for the first time. Do nothing.
+                 ESP_LOGI("sun", "Sun is %s", sunup ? "up" : "down");
+              } else {
+                 // Sunset or sunrise.
+                 ESP_LOGI("sun", "Sun is now %s", sunup ? "up" : "down");
+
+                 if (sunup && (t.hour > 8 || (t.hour == 7 && t.minute >= 30))) {
+                    id(pd_blinds)->make_call().set_command_open().perform();
+                 } else {
+                    id(pd_blinds)->make_call().set_command_close().perform();
+                 }
+              }
+
+              id(prev_sunup_) = sunup;
+
+    on_time_sync:
+      - lambda: |
+           auto t= id(sntp_time).now();
+           ESP_LOGE("on_time_sync", "%svalid %04d-%02d-%02d %02d:%02d:%02d, is_dst %d",
+                    t.is_valid() ? "": "in", t.year, t.month, t.day_of_month,
+                    t.hour, t.minute, t.second, t.is_dst);
+           if (id(sol).is_above_horizon() && id(need_rehome_)) {
+           // Don't do this, the stall detection doesn't work quickly enough if the blind
+           // *is* already homed; the cord skips on the gear. We could make it go down by
+           // a few percent and *then* rehome from there, while blocking external actions
+           // (or aborting if any external actions are invoked). Or we could just wire up
+           // the reed switches. Once the reed switch is present, the blind *will* be
+           // homed immediately after a power up, and we won't try homing it when it's
+           // already home so this code can be uncommented again.
+           //
+           // ESP_LOGI("on_time_sync", "Rehoming blind while sun is up");
+           //   id(home).press();
+           }
+
+sun:
+  id: sol
+  latitude: !secret latitude
+  longitude: !secret longitude
+
+external_components:
+  - source: github://slimcdk/esphome-custom-components
+    components: [tmc2209_hub, tmc2209, stepper]
+    refresh: 0s
+
+script:
+  - id: submit_blind
+    parameters:
+      position: int
+    mode: restart
+    then:
+      - lambda: |-
+          int nvalue = 2;
+          if (position == 100)
+               nvalue = 1;
+            else if (position == 0)
+               nvalue = 0;
+          id(tell_domo_nsvalues)->execute(${domo_blind}, nvalue, std::to_string(position));
+
+mqtt:
+  on_connect:
+    then:
+      - light.turn_on: blue_led
+  on_disconnect:
+    then:
+      - light.turn_off: blue_led
+  idf_send_async: true
+  on_json_message:
+    - topic: domoticz/out
+      then:
+        - lambda: |-
+            int idx = x["idx"];
+            int nvalue = x["nvalue"].as<int>();
+            int svalue1;
+
+            // ESP_LOGD("on_json_message", x["name"]);
+            switch (idx) {
+               case ${domo_blind}:
+                  svalue1 = x["svalue1"].as<int>();
+                  if (nvalue == 17) {
+                     ESP_LOGI("mqtt", "Stop at %d", id(encoder_tracking_)[1]);
+                     id(motor).stop();
+                  } else {
+                     ESP_LOGI("mqtt", "Move to %d", svalue1);
+                     auto call = id(pd_blinds).make_call();
+                     if (svalue1 == 100)
+                       call.set_command_open();
+                     else
+                       call.set_position((float)svalue1 / 100.0);
+                     call.perform();
+                  }
+                  break;
+            }
+
+
+i2c:
+  sda: 8
+  scl: 9
+  scan: true
+
+uart:
+  tx_pin: 17
+  rx_pin: 18
+  baud_rate: 712000
+
+output:
+  - platform: ledc
+    pin: 12
+    id: red_led_output
+
+  - platform: ledc
+    pin: 10
+    id: blue_led_output
+
+  - platform: gpio
+    pin: GPIO38
+    id: CFG1_pin
+  - platform: gpio
+    pin: GPIO48
+    id: CFG2_pin
+  - platform: gpio
+    pin: GPIO47
+    id: CFG3_pin
+
+light:
+  - platform: monochromatic
+    internal: true
+    output: red_led_output
+    id: red_led
+    name: LED 1
+  - platform: status_led
+    internal: true
+    output: blue_led_output
+    id: blue_led
+    name: Status LED
+
+globals:
+  - id: encoder_tracking_
+    type: int32_t[2]
+    restore_value: no
+
+  - id: encoder_offset_
+    type: int32_t
+    restore_value: no
+
+  - id: sensored_home_pos
+    type: int32_t
+    restore_value: no
+    initial_value: "0"
+
+  - id: home_resetting_
+    type: bool
+    restore_value: no
+    initial_value: "false"
+
+  - id: need_rehome_
+    type: bool
+    restore_value: no
+    initial_value: "true"
+
+  - id: prev_sunup_
+    type: int32_t
+    restore_value: no
+    initial_value: "-1"
+
+stepper:
+  - platform: tmc2209
+    id: motor
+    max_speed: ${max_speed} steps/s
+    acceleration: 100 steps/s^2
+    deceleration: 200 steps/s^2
+    rsense: 100 mOhm
+    vsense: False
+    enn_pin: 21
+    diag_pin: 16
+    index_pin: 11
+    # step_pin: 5
+    # dir_pin: 6
+    on_stall:
+      - logger.log:
+         level: INFO
+         format: "Motor stalled at %f in direction %d, travel %s!"
+         args: [ "id(encoder)->get_state()", "id(motor)->current_direction",
+               "cover_operation_to_str(id(pd_blinds)->current_operation)" ]
+      - lambda: |
+          if (id(motor).current_direction == -(${motor_direction})) {
+             id(need_rehome_) = false;
+             if (id(pd_blinds)->current_operation == COVER_OPERATION_IDLE) {
+               id(sensored_home_pos) = id(encoder)->get_state();
+             } else {
+               // Reset home once the tension is released and the encoder is idle
+               id(home_resetting_) = true;
+             }
+          }
+      - stepper.stop: motor
+      - light.turn_on:
+          id: red_led
+          transition_length: 0s
+      - delay: 250ms
+      - light.turn_off:
+          id: red_led
+          transition_length: 1s
+
+button:
+  - platform: restart
+    name: Restart
+
+  - platform: template
+    name: Home
+    id: home
+    on_press:
+      - logger.log:
+          level: INFO
+          format: "Blind rehome"
+      - lambda: |
+          id(motor).set_max_speed(${max_speed}/2);
+          id(motor).set_target(id(motor)->current_position - 2.5 * ${encoder_closed_pos} * ${motor_direction});
+
+  - platform: template
+    name: Stop
+    on_press:
+      - logger.log:
+          level: INFO
+          format: "Stop template button"
+      - stepper.stop: motor
+
+binary_sensor:
+ - platform: gpio
+   name: Power Good
+   pin:
+     number: 15
+     mode: INPUT
+     inverted: true
+   device_class: power
+   filters:
+     - delayed_on: 10ms
+
+ - platform: gpio
+   name: Button 1
+   internal: true
+   pin:
+     number: 35
+     mode: INPUT
+     inverted: true
+   id: btn1
+   filters:
+     - delayed_on: 10ms
+   on_press:
+     - cover.close: pd_blinds
+
+ - platform: gpio
+   name: Button 2
+   id: btn2
+   pin:
+     number: 36
+     mode: INPUT
+     inverted: true
+   filters:
+     - delayed_on: 10ms
+   on_click:
+      - max_length: 1s
+        then:
+          - logger.log:
+              level: INFO
+              format: "Stop button"
+          - stepper.stop: motor
+
+      - min_length: 2s
+        max_length: 5s
+        then:
+          - logger.log:
+              level: INFO
+              format: "Blind rehome"
+          - lambda: |
+              id(motor).set_max_speed(${max_speed}/2);
+              id(motor).set_target(id(motor)->current_position - 2.5 * ${encoder_closed_pos} * ${motor_direction});
+
+ - platform: gpio
+   name: Button 3
+   internal: true
+   id: btn3
+   pin:
+     number: 37
+     mode: INPUT
+     inverted: true
+   filters:
+     - delayed_on: 10ms
+   on_press:
+     - cover.open: pd_blinds
+
+ - platform: gpio
+   name: Reed Switch
+   id: reedsw
+   pin:
+     number: 7
+     mode:
+       input: true
+       pullup: false
+     inverted: true
+   filters:
+     - delayed_on_off: 10ms
+   on_press:
+     - logger.log:
+         level: INFO
+         format: "Reed switch on at %f in direction %d, travel %s!"
+         args: [ "id(encoder)->get_state()", "id(motor)->current_direction",
+                 "cover_operation_to_str(id(pd_blinds)->current_operation)" ]
+     - lambda: |
+         // If we hit the reed switch while travelling upwards, stop the motor and reset the home position.
+         if (id(motor).current_direction == -(${motor_direction})) {
+            id(motor).stop();
+            id(need_rehome_) = false;
+            if (id(pd_blinds)->current_operation == COVER_OPERATION_IDLE) {
+              id(sensored_home_pos) = id(encoder)->get_state();
+            } else {
+              // Reset home once the tension is released and the encoder is idle
+              id(home_resetting_) = true;
+            }
+         }
+   on_release:
+     - logger.log:
+         level: INFO
+         format: "Reed switch off at %f in direction %d, travel %s!"
+         args: [ "id(encoder)->get_state()", "id(motor)->current_direction",
+                 "cover_operation_to_str(id(pd_blinds)->current_operation)" ]
+
+as5600:
+  slow_filter: 16x
+
+sensor:
+  - platform: as5600
+    id: encoder1
+    update_interval: 60s
+    status:
+      name: Encoder status
+      id: encoder_status
+
+  - platform: as5600
+    name: Encoder
+    id: encoder
+    internal: true
+    update_interval: 50ms
+    filters:
+      # compute absolute position from angle value
+      - lambda: |
+          const uint16_t curr = x;
+          int16_t delta = curr - id(encoder_tracking_)[0];
+          if (delta > 2048)
+            delta -= 4096;
+          else if (delta < -2047)
+            delta += 4096;
+          if (delta == 0 && id(pd_blinds)->current_operation != COVER_OPERATION_IDLE) {
+             if (id(home_resetting_)) {
+               id(home_resetting_) = false;
+               id(sensored_home_pos) = id(encoder)->get_state();
+               ESP_LOGI("cover", "idle at %d (home reset)", id(encoder_tracking_)[1]);
+             } else {
+               ESP_LOGI("cover", "idle at %d", id(encoder_tracking_)[1]);
+             }
+             id(motor)->set_max_speed(${max_speed});
+             id(pd_blinds)->current_operation = COVER_OPERATION_IDLE;
+             id(pd_blinds)->publish_state(false);
+          }
+          if (delta < 2 && delta > -2)
+            return {};
+          delta *= ${encoder_direction};
+          id(encoder_tracking_)[0] = curr;
+          id(encoder_tracking_)[1] += delta;
+          if (id(encoder_tracking_)[1] < id(sensored_home_pos)) {
+             ESP_LOGI("home", "Adjusted to %d", id(encoder_tracking_)[1]);
+             id(sensored_home_pos) = id(encoder_tracking_)[1];
+          }
+          ESP_LOGD("angle", "Old %d new %d delta %d now %d home %d", id(encoder_tracking_)[0], curr, delta,
+            id(encoder_tracking_)[1] + delta, id(sensored_home_pos));
+
+          if (delta > 100 && id(pd_blinds)->current_operation != COVER_OPERATION_CLOSING) {
+             id(pd_blinds)->current_operation= COVER_OPERATION_CLOSING;
+             ESP_LOGI("cover", "closing");
+          } else if (delta < -100 && id(pd_blinds)->current_operation != COVER_OPERATION_OPENING) {
+             id(pd_blinds)->current_operation = COVER_OPERATION_OPENING;
+             ESP_LOGI("cover", "opening");
+          }
+          return id(encoder_tracking_)[1];
+    accuracy_decimals: 0
+    state_class: measurement
+
+  - platform: adc
+    internal: true
+    pin: 4
+    name: VBUS Voltage
+    update_interval: 10s
+    attenuation: 12dB
+    filters:
+      - multiply: 8.47742
+
+  - platform: tmc2209
+    internal: true
+    type: motor_load
+    name: Motor load
+    update_interval: 250ms
+    filters:
+      delta: 1
+
+  - platform: tmc2209
+    internal: true
+    type: stallguard_result
+    name: StallGuard result
+    update_interval: 250ms
+    filters:
+      delta: 1
+
+  - platform: tmc2209
+    internal: true
+    type: actual_current
+    name: Actual current
+    update_interval: 250ms
+    filters:
+      delta: 1
+
+cover:
+  - platform: template
+    id: pd_blinds
+    name: PD Stepper Blinds
+    has_position: true
+    assumed_state: false
+    # internal: true
+    lambda: |-
+      static int old_percent = -1;
+      int percent = (100.0 * (id(encoder)->get_state()-id(sensored_home_pos)) / ${encoder_closed_pos}) + 0.1;
+      if (${report_blind} && percent != old_percent) {
+        old_percent = percent;
+        id(submit_blind).execute(100 - percent);
+      }
+      return (100.0 - percent) / 100.0;
+    stop_action:
+      - logger.log:
+              level: INFO
+              format: "Cover stop"
+      - stepper.stop: motor
+    open_action:
+      - lambda: |-
+          if (id(need_rehome_)) {
+            id(home).press();
+          } else {
+          int32_t wantpos = id(sensored_home_pos);
+          int32_t posdelta = wantpos - id(encoder)->get_state();
+          int32_t stepdelta = ((posdelta * 200 * ${microsteps} * ${motor_direction}) + 2048) / 4096;
+          ESP_LOGI("cover", "From %f to open (%f to %d) is delta %d, %d steps. Step %d -> %d",
+                            id(pd_blinds)->position, id(encoder)->get_state(), wantpos, posdelta, stepdelta,
+                            id(motor)->current_position, id(motor)->current_position + stepdelta);
+          id(home_resetting_) = false;
+          id(motor).set_target(id(motor)->current_position + stepdelta);
+          }
+    close_action:
+      - lambda: |-
+          int32_t wantpos = id(sensored_home_pos) + ${encoder_closed_pos};
+          int32_t posdelta = wantpos - id(encoder)->get_state();
+          int32_t stepdelta = ((posdelta * 200 * ${microsteps} * ${motor_direction}) + 2048) / 4096;
+          ESP_LOGI("cover", "From %f to closed (%f to %d) is delta %d, %d steps. Step %d -> %d",
+                            id(pd_blinds)->position,  id(encoder)->get_state(), wantpos, posdelta, stepdelta,
+                            id(motor)->current_position, id(motor)->current_position + stepdelta);
+          id(home_resetting_) = false;
+          id(motor).set_target(id(motor)->current_position + stepdelta);
+    position_action:
+      - lambda: |-
+          int32_t wantpos = id(sensored_home_pos) + (1.0 - pos) * ${encoder_closed_pos};
+          int32_t posdelta = wantpos - id(encoder)->get_state();
+          int32_t stepdelta = ((posdelta * 200 * ${microsteps} * ${motor_direction}) + 2048) / 4096;
+          ESP_LOGI("cover", "From %f to %f (%f to %d) is delta %d, %d steps. Step %d -> %d",
+                            id(pd_blinds)->position, pos, id(encoder)->get_state(), wantpos, posdelta, stepdelta,
+                            id(motor)->current_position, id(motor)->current_position + stepdelta);
+          id(home_resetting_) = false;
+          id(motor).set_target(id(motor)->current_position + stepdelta);

@@ -104,5 +104,3 @@ ESPHome configuration examples are provided in the `esphome/` directory. The `la
 - **max_speed** - Maximum motor speed
 - **stallguard_threshold** - StallGuard threshold for stall detection
 - **pd_voltage** - Power delivery voltage (e.g., "15" for 15V)
-- **domo_blind** - Domoticz blind ID (if using Domoticz integration)
-- **report_blind** - Enable/disable blind position reporting (1 or 0)
