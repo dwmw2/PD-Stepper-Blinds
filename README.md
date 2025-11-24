@@ -90,3 +90,19 @@ Two 25mm bolts go through the other corners of the outer assembly to secure it t
 ## Installation
 
 For instructions on mounting the completed assembly into your window frame, see [INSTALLATION.md](INSTALLATION.md).
+
+## Programming
+
+ESPHome configuration examples are provided in the `esphome/` directory. The `landing-blind-1.yaml` file shows a complete configuration with the following substitutions:
+
+- **name** - Device name for ESPHome and Home Assistant
+- **encoder_closed_pos** - Full blinds length in encoder counts (adjust to suit your setup)
+- **encoder_direction** - Which direction is towards 'closed' (1 or -1)
+- **motor_direction** - Motor direction relative to encoder (1 or -1)
+- **microsteps** - Microstepping setting for the stepper driver
+- **run_current** - Motor run current (e.g., "100m" for 100mA)
+- **max_speed** - Maximum motor speed
+- **stallguard_threshold** - StallGuard threshold for stall detection
+- **pd_voltage** - Power delivery voltage (e.g., "15" for 15V)
+- **domo_blind** - Domoticz blind ID (if using Domoticz integration)
+- **report_blind** - Enable/disable blind position reporting (1 or 0)

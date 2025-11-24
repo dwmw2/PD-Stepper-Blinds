@@ -1,0 +1,16 @@
+substitutions:
+  name: "landing-blind-1"
+  encoder_closed_pos: "230000" # full blinds length (in encoder counts) !! CHANGE TO SUIT YOUR SETUP !!
+  encoder_direction: "-1" # Which way is towards 'closed'?
+  motor_direction: "-1" # w.r.t. encoder
+  microsteps: "2"
+  run_current: "100m"
+  max_speed: "800"
+  stallguard_threshold: "60"
+  pd_voltage: "15"
+  domo_blind: 922
+  report_blind: 1
+
+packages:
+  blind: !include blind.yaml
+
