@@ -86,3 +86,7 @@ Push the gear onto the motor shaft, and push the encoder magnet from the PD-Step
 Two 25mm bolts go through the other corners of the outer assembly to secure it to the backing plate, with the blind cord inside.
 
 ![Final Assembly](images/PXL_20250329_202715522.MP.webp)
+
+## Installation
+
+For instructions on mounting the completed assembly into your window frame, see [INSTALLATION.md](INSTALLATION.md).
