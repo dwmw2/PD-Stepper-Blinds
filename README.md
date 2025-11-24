@@ -22,21 +22,6 @@ This project provides a complete solution for automating window blinds with prec
 
 Power is supplied through a custom PCB that connects to internal pads on the PD-Stepper board using spring terminals, eliminating the need for external connectors.
 
-## Power PCB
-
-The custom power distribution PCB is an optional component that provides two key features:
-
-- **Internal Power Delivery** - Supplies power directly to internal pads on the PD-Stepper board via Harwin S1761-42R spring terminals, bypassing the USB-C connector
-- **Reed Switch Connection** - Provides a connector for a reed switch to detect when the blinds are fully closed
-
-### Design Files
-
-KiCad project files are located in the `power-pcb/` directory. Gerber files for fabrication are available in `power-pcb/Gerber/`.
-
-For PCB assembly through JLCPCB, the `jlcbom.csv` file contains the spring terminal part number in the required format.
-
-![Power PCB](images/PCB.png)
-
 ## 3D Design
 
 The mounting hardware consists of multiple printed parts that work together to create a complete blind mounting assembly.
@@ -69,13 +54,9 @@ The mounting hardware consists of multiple printed parts that work together to c
 
 ### 1. Power PCB Preparation
 
-The power PCB is designed to make contact with the back of the PD-Stepper board, using the terminals shown.
+See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
-![Power PCB Terminals](images/image.webp)
-
-The JST-PH socket is fitted at right angles to the board with its pins laying flat on the copper, so manufacturers like JLCPCB won't be able to build that. Using the jig as shown to position the socket and PCB, solder them by hand.
-
-![PCB Jig](images/PXL_20250314_105317922.webp)
+[![Power PCB](images/PCB.png)](power-pcb/README.md)
 
 ### 2. Outer PCB Assembly
 
