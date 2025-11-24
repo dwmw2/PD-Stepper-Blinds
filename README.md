@@ -61,7 +61,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 ### 2. Outer Assembly
 
-First, attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and fit the cover piece on top. Then fit the power PCB into the outer piece, and sandwich them together so that the spring terminals make contact. Screw that piece together using two 15mm bolts and half-width M3 nuts, positioned diagonally opposite. Finally, affix the heatsink to the full assembly through the gap in the cover.
+First, attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and fit the cover piece on top. Then fit the power PCB into the outer piece, and sandwich them together so that the spring terminals make contact. Screw that piece together using two 15mm bolts and half-width M3 nuts, positioned diagonally opposite. Cut some sections of the acrylic rod to length and insert them into the holes for the blue and red LEDs. Finally, affix the heatsink to the full assembly through the gap in the cover.
 
 ![PCB Assembly](images/PXL_20250329_152729706.MP.webp)
 
