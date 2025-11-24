@@ -58,7 +58,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 [![Power PCB](images/PCB.png)](power-pcb/README.md)
 
-### 2. Outer PCB Assembly
+### 2. Outer Assembly
 
 First, attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and fit the cover piece on top. Then fit the power PCB into the outer piece, and sandwich them together so that the spring terminals make contact. Screw that piece together using two 15mm bolts and half-width M3 nuts. Finally, affix the heatsink to the full assembly through the gap in the cover.
 
