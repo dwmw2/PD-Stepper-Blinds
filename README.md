@@ -103,7 +103,7 @@ ESPHome configuration examples are provided in the `esphome/` directory. The `la
 - **run_current** - Motor run current (e.g., "100m" for 100mA)
 - **max_speed** - Maximum motor speed
 - **stallguard_threshold** - StallGuard threshold for stall detection
-- **pd_voltage** - Power delivery voltage (e.g., "15" for 15V)
+- **pd_voltage** - Power delivery voltage (unused)
 
 On power-up, the controller will assume that the blinds are open. The first time it is asked to open the blinds, it will perform a rehoming operation, running at half-speed until it stalls. It will close the blinds at sunset, and open the blinds at 07:30AM or sunrise, whichever is later.
 
