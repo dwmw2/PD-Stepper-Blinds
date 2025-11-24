@@ -107,4 +107,4 @@ ESPHome configuration examples are provided in the `esphome/` directory. The `la
 
 On power-up, the controller will assume that the blinds are open. The first time it is asked to open the blinds, it will perform a rehoming operation, running at half-speed until it stalls. It will close the blinds at sunset, and open the blinds at 07:30AM or sunrise, whichever is later.
 
-You can tweak the current, speed and stallguard settings to suit your blinds and motor, so that the stall is detected correctly.
+You can tweak the current, speed and stallguard settings to suit your blinds and motor, so that the stall is detected correctly. The motor_direction may differ for supposedly identical installations, if your motor cables are wired differently.
