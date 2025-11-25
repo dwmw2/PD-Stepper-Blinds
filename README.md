@@ -64,11 +64,11 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 ### 2. Outer Assembly
 
 - Prepare the 3D-printed Outer piece by pushing two half-width M3 nuts into diagonally opposed holes, then pushing the power PCB into its slot on the other side.
-- Attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and loosely place the cover piece on top.
-- Apply the outer piece to the back of the PD-Stepper board so that the spring terminals make contact with the power and NTC pads.
+- Attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and loosely place the Cover piece on top.
+- Apply the Outer piece to the back of the PD-Stepper board so that the spring terminals make contact with the power and NTC pads.
 - Screw together using two 15mm countersunk bolts.
 - Cut sections of the acrylic rod to use as light guides, and push them gently into the holes for the blue and red LEDs.
-- Finally, affix the heatsink to the full assembly through the gap in the cover.
+- Finally, affix the heatsink to the full assembly through the gap in the Cover.
 
 ![PCB Assembly](images/PXL_20250329_152729706.MP.webp)
 
@@ -81,19 +81,19 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 ### 4. Motor Housing
 
-- Pass the motor cable through the cable hole, then attach the base plate to the motor using the hex standoffs. Use two short (5-6mm) standoffs in the corners where the outer assembly is screwed together, and two longer (8mm) standoffs in the corners which will be used to screw the outer to this piece.
-- You will have to turn the standoffs by a few degrees to the correct orientation such that the outer piece fits over them. The outer piece itself can be used as a spanner for that purpose. The outer piece then pushes over the standoffs and guide posts.
-- Offer the outer assembly up to this to check that it all fits together.
+- Pass the motor cable through the cable hole, then attach the Base Plate to the motor using the hex standoffs. Use two short (5-6mm) standoffs in the corners where the Outer assembly is screwed together, and two longer (8mm) standoffs in the corners which will be used to screw the Inner to this piece.
+- You will have to turn the standoffs by a few degrees to the correct orientation such that the Inner piece fits over them. The Inner piece itself can be used as a spanner for that purpose. The Inner piece then pushes over the standoffs and guide posts.
+- Offer the Outer assembly up to this to check that it all fits together.
 
 ![Motor Assembly](images/PXL_20250329_155254375.MP.webp)
 
 ### 5. Gear Installation
 
-- Push the gear onto the motor shaft, and push the encoder magnet from the PD-Stepper kit into the front of the gear as shown.
+- Push the Gear onto the motor shaft, and push the encoder magnet from the PD-Stepper kit into the front of the Gear as shown.
 
 ### 6. Final Assembly
 
-- Two 25mm bolts go through the other corners of the outer assembly to secure it to the backing plate, with the blind cord inside.
+- Two 25mm bolts go through the other corners of the Outer assembly to secure it to the Base Plate, with the blind cord inside.
 
 ![Final Assembly](images/PXL_20250329_202715522.MP.webp)
 
