@@ -110,3 +110,5 @@ ESPHome configuration examples are provided in the `esphome/` directory. The `la
 On power-up, the controller will assume that the blinds are open. The first time it is asked to open the blinds, it will perform a rehoming operation, running at half-speed until it stalls. It will close the blinds at sunset, and open the blinds at 07:30AM or sunrise, whichever is later.
 
 You can tweak the current, speed and stallguard settings to suit your blinds and motor, so that the stall is detected correctly. The motor_direction may differ for supposedly identical installations, if your motor cables are wired differently.
+
+The third pin on the power connector is for a reed switch, which connects that GPIO pin to ground when the blind is fully open. This is not necessary, because rehoming works well with properly calibrated stall detection anyway. One thing that a reed switch would allow is for the device to be *sure*, on startup, that it is at the home position and to initiate a rehoming if not. Rehoming on startup is disabled because when starting from the home position, the immediate stall... well, isn't immediate enough, and is noisy.
