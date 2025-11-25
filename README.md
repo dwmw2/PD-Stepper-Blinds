@@ -76,7 +76,8 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 ### 3. Build Motor Cable
 
-Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your motor, matching either the straight-through or crossover cables from the PD-Stepper kit which won't be long enough to reach. Test the motor and cable using your completed outer assembly.
+- Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your motor, matching either the straight-through or crossover cables from the PD-Stepper kit which won't be long enough to reach.
+- Test the motor and cable using your completed outer assembly.
 
 ### 4. Motor Housing
 
@@ -88,11 +89,11 @@ Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your m
 
 ### 5. Gear Installation
 
-Push the gear onto the motor shaft, and push the encoder magnet from the PD-Stepper kit into the front of the gear as shown.
+- Push the gear onto the motor shaft, and push the encoder magnet from the PD-Stepper kit into the front of the gear as shown.
 
 ### 6. Final Assembly
 
-Two 25mm bolts go through the other corners of the outer assembly to secure it to the backing plate, with the blind cord inside.
+- Two 25mm bolts go through the other corners of the outer assembly to secure it to the backing plate, with the blind cord inside.
 
 ![Final Assembly](images/PXL_20250329_202715522.MP.webp)
 
