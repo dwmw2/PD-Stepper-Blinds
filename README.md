@@ -12,7 +12,7 @@ This project provides a complete solution for automating window blinds with prec
 
 ### Components
 
-- **PD-Stepper Kit** - ESP32-based stepper motor controller (includes board, encoder magnet, motor cables, and aluminium spacer)
+- **PD-Stepper Kit** - ESP32-based stepper motor controller (includes board, encoder magnet, aluminium spacer and heatsunk)
 - **Stepper Motor** - NEMA 17 or compatible
 - **Custom Power PCB** - Distributes power to the PD-Stepper board via spring terminals connected to internal pads
 - **3D-Printed Mounting Hardware** - Complete blind mounting assembly
@@ -63,7 +63,12 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 ### 2. Outer Assembly
 
-First, attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and fit the cover piece on top. Then fit the power PCB into the outer piece, and sandwich them together so that the spring terminals make contact. Screw that piece together using two 15mm bolts and half-width M3 nuts, positioned diagonally opposite. Cut some sections of the acrylic rod to length and insert them into the holes for the blue and red LEDs. Finally, affix the heatsink to the full assembly through the gap in the cover.
+- Prepare the 3D-printed Outer piece by pushing two half-width M3 nuts into diagonally opposed holes, then pushing the power PCB into its slot on the other side.
+- Attach the PD-Stepper board to the aluminium spacer using the sticky heat transfer pad, and loosely place the cover piece on top.
+- Apply the outer piece to the back of the PD-Stepper board so that the spring terminals make contact with the power and NTC pads.
+- Screw together using two 15mm countersunk bolts.
+- Cut sections of the acrylic rod to use as light guides, and push them gently into the holes for the blue and red LEDs.
+- Finally, affix the heatsink to the full assembly through the gap in the cover.
 
 ![PCB Assembly](images/PXL_20250329_152729706.MP.webp)
 
@@ -71,11 +76,13 @@ First, attach the PD-Stepper board to the aluminium spacer using the sticky heat
 
 ### 3. Build Motor Cable
 
-Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your motor, matching either the straight-through or crossover cables from the PD-Stepper kit which won't be long enough to reach. Test the motor using your completed outer assembly.
+Using JST-PH 2.0 connectors, build a 4-pin to 6-pin cable which works for your motor, matching either the straight-through or crossover cables from the PD-Stepper kit which won't be long enough to reach. Test the motor and cable using your completed outer assembly.
 
 ### 4. Motor Housing
 
-Pass the motor cable through the cable hole, then attach the base plate to the motor using two 5mm standoffs and two 6mm standoffs. You will have to turn the standoffs by a few degrees to the correct orientation such that the outer piece fits over them. The outer piece itself can be used as a spanner for that purpose. The outer piece then pushes over the standoffs and guide posts.
+- Pass the motor cable through the cable hole, then attach the base plate to the motor using the hex standoffs. Use two short (5-6mm) standoffs in the corners where the outer assembly is screwed together, and two longer (8mm) standoffs in the corners which will be used to screw the outer to this piece.
+- You will have to turn the standoffs by a few degrees to the correct orientation such that the outer piece fits over them. The outer piece itself can be used as a spanner for that purpose. The outer piece then pushes over the standoffs and guide posts.
+- Offer the outer assembly up to this to check that it all fits together.
 
 ![Motor Assembly](images/PXL_20250329_155254375.MP.webp)
 
@@ -111,6 +118,6 @@ ESPHome configuration examples are provided in the `esphome/` directory. The `la
 
 On power-up, the controller will assume that the blinds are open. The first time it is asked to open the blinds, it will perform a rehoming operation, running at half-speed until it stalls. It will close the blinds at sunset, and open the blinds at 07:30AM or sunrise, whichever is later.
 
-You can tweak the current, speed and stallguard settings to suit your blinds and motor, so that the stall is detected correctly. The motor_direction may differ for supposedly identical installations, if your motor cables are wired differently.
+You can tweak the current, speed and stallguard settings to suit your blinds and motor, so that the stall is detected correctly. The motor_direction may differ for supposedly identical installations, if your motor cables are wired differently. Some notes on calibration are in the top of the [`blind.yaml`](esphome/blind.yaml) file.
 
 The third pin on the power connector is for a reed switch, which connects that GPIO pin to ground when the blind is fully open. This is not necessary, because rehoming works well with properly calibrated stall detection anyway. One thing that a reed switch would allow is for the device to be *sure*, on startup, that it is at the home position and to initiate a rehoming if not. Rehoming on startup is disabled because when starting from the home position, the immediate stall... well, isn't immediate enough, and is noisy.
