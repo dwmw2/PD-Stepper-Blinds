@@ -7,9 +7,9 @@ The custom power distribution PCB is an optional component that provides two key
 
 ### Design Files
 
-KiCad project files are located in the `power-pcb/` directory. Gerber files for fabrication are available in `power-pcb/Gerber/`.
+KiCad project files are located in the `power-pcb/` directory. Gerber and drill files for fabrication are available in `power-pcb/Gerber/`.
 
-For PCB assembly through JLCPCB, the `jlcbom.csv` file contains the spring terminal part number in the required format.
+You can assemble this yourself, but the spring terminals are hard to solder manually. There are plenty of PCB assembly services which will do it for you; I happened to use JLCPCB. For a walk-through of the JLCPCB ordering process for the uninitiated, see [JLCPCB.md](JLCPCB.md).
 
 ![Power PCB](../images/PCB.png)
 
