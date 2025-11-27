@@ -97,7 +97,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 - Two 25mm bolts go through the other corners of the Outer assembly to secure it to the Base Plate, with the blind cord inside.
 
-![Final Assembly](images/PXL_20250329_202715522.MP.webp)
+![Final Assembly](images/b3938d3c-5572-4378-b2b1-b8e8eef6b51b~1.jpg)
 
 ## Installation
 
