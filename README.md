@@ -59,7 +59,9 @@ The mounting hardware consists of multiple printed parts that work together to c
 
 See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
-[![Power PCB](images/PCB.png)](power-pcb/README.md)
+| Power PCB | Assembled PCB |
+|-----------|---------------|
+| [![Power PCB](images/PCB.png)](power-pcb/README.md) | ![Assembled PCB](images/09983cf9-ed67-4b29-b92d-5fa725ae6320~1.jpg) |
 
 ### 2. Outer Assembly
 
@@ -91,7 +93,10 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 ### 5. Gear Installation
 
-- Push the Gear onto the motor shaft, and push the encoder magnet from the PD-Stepper kit into the front of the Gear as shown.
+- Push the Gear onto the motor shaft, pushing it fully home until the centre of the Gear is aligned with the centre of the guides in the Inner (and Outer) pieces and the cord will flow freely.
+- The centre of the Gear is fully round for 2.5mm at the back and then has a flat part. This is fully parameterised in the spreadsheet in the FreeCAD model, if you need to adjust it or make the Inner piece thicker to allow for a longer shaft.
+- You may also need to trim the motor shaft so that there is sufficient space to install the encoder magnet. The easiest way to do this is to install a Gear and then use a Dremel to cut through both Gear and motor shaft at the right point.
+- Push the encoder magnet from the PD-Stepper kit into the front of the Gear as shown. It should push fully home and be a relatively snug fit. If you have a metalling blind cord, note that the magnet may sometimes prefer attaching itself to the blind cord rather than staying in the Gear where you put it.
 
 | Trimmed gear shaft | Gear with magnet |
 |--------------------|------------------|
@@ -99,7 +104,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 ### 6. Final Assembly
 
-- Two 25mm bolts go through the other corners of the Outer assembly to secure it to the Base Plate, with the blind cord inside.
+- Two 22.5mm bolts go through the other corners of the Outer assembly to secure it to the Base Plate, with the blind cord inside. Bolts of that length are hard to come by; you *may* find that 20mm is just about enough, but I used 25mm bolts and the Dremel.
 
 ![Final Assembly](images/b3938d3c-5572-4378-b2b1-b8e8eef6b51b~1.jpg)
 
