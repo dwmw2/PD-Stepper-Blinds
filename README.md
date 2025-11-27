@@ -17,8 +17,8 @@ This project provides a complete solution for automating window blinds with prec
 - **Custom Power PCB** - Distributes power to the PD-Stepper board via spring terminals connected to internal pads
 - **3D-Printed Mounting Hardware** - Complete blind mounting assembly
 - **M3 Hex Standoffs and Nuts** - For assembly ([example](https://www.amazon.co.uk/dp/B08FZKLYSB))
-- **M3 Countersunk Bolts** - For mounting ([example](https://www.amazon.co.uk/dp/B0CPDQJ7ZF))
-- **JST-PH 2.0mm Sockets** - 3-pin connectors for power PCB ([example](https://www.amazon.co.uk/dp/B0CDG95RDT))
+- **M3 Countersunk Bolts, 15mm and 22.5mm** - For mounting ([example](https://www.amazon.co.uk/dp/B0CPDQJ7ZF))
+- **JST-PH 2.0mm Connectors** - 3-pin connectors for power PCB ([example](https://www.amazon.co.uk/dp/B0CDG95RDT))
 - **2mm Acrylic Rod** - For light guides ([example](https://www.amazon.co.uk/dp/B0DQ1757SP))
 
 ### Power Distribution
@@ -106,7 +106,9 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 - Two 22.5mm bolts go through the other corners of the Outer assembly to secure it to the Base Plate, with the blind cord inside. Bolts of that length are hard to come by; you *may* find that 20mm is just about enough, but I used 25mm bolts and the Dremel.
 
-![Final Assembly](images/b3938d3c-5572-4378-b2b1-b8e8eef6b51b~1.jpg)
+| Assembled Units | Connector Wiring |
+|-----------------|------------------|
+| ![Assembled Units](images/b3938d3c-5572-4378-b2b1-b8e8eef6b51b~1.jpg) | ![Connector Wiring](images/a29fff89-6272-4b4a-8851-d4244bea5419~1.jpg) |
 
 ## Installation
 
