@@ -95,7 +95,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 - Push the Gear onto the motor shaft, pushing it fully home until the centre of the Gear is aligned with the centre of the guides in the Inner (and Outer) pieces and the cord will flow freely.
 - The centre of the Gear is fully round for 2.5mm at the back and then has a flat part. This is fully parameterised in the spreadsheet in the FreeCAD model, if you need to adjust it or make the Inner piece thicker to allow for a longer shaft.
-- You may also need to trim the motor shaft so that there is sufficient space to install the encoder magnet. The easiest way to do this is to install a Gear and then use a Dremel to cut through both Gear and motor shaft at the right point.
+- You may also need to trim the motor shaft so that there is sufficient space to install the encoder magnet. The easiest way to do this is to install a Gear and then use a Dremel to cut through both Gear and motor shaft at the right point. I kept the motor turning as I did this to ensure a smooth cut.
 - Push the encoder magnet from the PD-Stepper kit into the front of the Gear as shown. It should push fully home and be a relatively snug fit. If you have a metalling blind cord, note that the magnet may sometimes prefer attaching itself to the blind cord rather than staying in the Gear where you put it.
 
 | Trimmed gear shaft | Gear with magnet |
@@ -105,6 +105,10 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 ### 6. Final Assembly
 
 - Two 22.5mm bolts go through the other corners of the Outer assembly to secure it to the Base Plate, with the blind cord inside. Bolts of that length are hard to come by; you *may* find that 20mm is just about enough, but I used 25mm bolts and the Dremel.
+- The 3-pin JST-PH plug is shown connected to the Power PCB in the Outer Assembly. You may prefer to use all black for the visible part, and/or apply heatshrink. As shown in the images, the pinout is:
+  - Black: GND
+  - Red: +5V to +20V
+  - Yellow: Reed switch, closed to GND when the blind is fully open *(optional)*.
 
 | Assembled Units | Connector Wiring |
 |-----------------|------------------|
