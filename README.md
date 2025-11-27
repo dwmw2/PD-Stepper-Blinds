@@ -70,9 +70,9 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 - Cut sections of the acrylic rod to use as light guides, and push them gently into the holes for the blue and red LEDs.
 - Finally, affix the heatsink to the full assembly through the gap in the Cover.
 
-![PCB Assembly](images/PXL_20250329_152729706.MP.webp)
-
-![Completed Outer Assembly](images/PXL_20250329_152741348.MP.webp)
+| Exploded View | Bottom | Top |
+|---------------|--------|-----|
+| ![Exploded Outer Assembly](images/a018a06f-2d5e-4c18-81cb-345d447a204a~1.jpg) | ![Completed Outer Assembly - bottom](images/PXL_20251127_205219429.jpg) | ![Completed Outer Assembly - top](images/PXL_20250329_152741348.MP.webp) |
 
 ### 3. Build Motor Cable
 
@@ -85,7 +85,9 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 - You will have to turn the standoffs by a few degrees to the correct orientation such that the Inner piece fits over them. The Inner piece itself can be used as a spanner for that purpose. The Inner piece then pushes over the standoffs and guide posts.
 - Offer the Outer assembly up to this to check that it all fits together.
 
-![Motor Assembly](images/PXL_20250329_155254375.MP.webp)
+| Aligning the hex standoffs | Motor Assembly |
+|----------------------------|----------------|
+| ![Aligning the hex standoffs](images/7ae5cbc4-8cac-4fe8-a77e-14ad683bd5cb~1.jpg) | ![Motor Assembly](images/PXL_20250329_155254375.MP.webp) |
 
 ### 5. Gear Installation
 
