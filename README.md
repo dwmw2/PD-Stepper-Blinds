@@ -72,7 +72,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 | Exploded View | Bottom | Top |
 |---------------|--------|-----|
-| ![Exploded Outer Assembly](images/a018a06f-2d5e-4c18-81cb-345d447a204a~1.jpg) | ![Completed Outer Assembly - bottom](images/PXL_20251127_205219429.jpg) | ![Completed Outer Assembly - top](images/PXL_20250329_152741348.MP.webp) |
+| ![Exploded Outer Assembly](images/a018a06f-2d5e-4c18-81cb-345d447a204a~1.jpg) | ![Completed Outer Assembly - bottom](images/PXL_20251127_205219429.jpg) | ![Completed Outer Assembly - top](images/fd9be8fb-9f3d-4524-8df1-f119c76c7830~1.jpg) |
 
 ### 3. Build Motor Cable
 
