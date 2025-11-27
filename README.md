@@ -93,7 +93,9 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 - Push the Gear onto the motor shaft, and push the encoder magnet from the PD-Stepper kit into the front of the Gear as shown.
 
-![Gear with magnet](images/35e1384c-9f7d-4179-8ff1-7f0e097fa9ee~1.jpg)
+| Trimmed gear shaft | Gear with magnet |
+|--------------------|------------------|
+| ![Trimmed gear shaft](images/ee41db52-529a-48ca-ac50-da5ad14c1c0f~1.jpg) | ![Gear with magnet](images/35e1384c-9f7d-4179-8ff1-7f0e097fa9ee~1.jpg) |
 
 ### 6. Final Assembly
 
