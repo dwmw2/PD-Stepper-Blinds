@@ -87,7 +87,7 @@ See [power-pcb/README.md](power-pcb/README.md) for PCB assembly instructions.
 
 | Aligning the hex standoffs | Motor Assembly |
 |----------------------------|----------------|
-| ![Aligning the hex standoffs](images/7ae5cbc4-8cac-4fe8-a77e-14ad683bd5cb~1.jpg) | ![Motor Assembly](images/PXL_20250329_155254375.MP.webp) |
+| ![Aligning the hex standoffs](images/7ae5cbc4-8cac-4fe8-a77e-14ad683bd5cb~1.jpg) | ![Motor Assembly](images/35e1384c-9f7d-4179-8ff1-7f0e097fa9ee~1.jpg) |
 
 ### 5. Gear Installation
 
