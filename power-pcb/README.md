@@ -19,6 +19,6 @@ The power PCB is designed to make contact with the back of the PD-Stepper board,
 
 ![Power PCB Terminals](../images/image.webp)
 
-The JST-PH socket is fitted at right angles to the board with its pins laying flat on the copper, so manufacturers like JLCPCB won't be able to build that. Using the jig as shown to position the socket and PCB, solder them by hand.
+The JST-PH socket is fitted at right angles to the board with its pins laying flat on the copper, so manufacturers like JLCPCB won't be able to build that. Using the Jig as shown to position the socket and PCB, solder them by hand. Don't do it with the PD-Stepper board in place like in the picture. Sandwich the PCB and socket between the Jig parts and screw it together to hold it in place while you solder.
 
 ![PCB Jig](../images/PXL_20250314_105317922.webp)
