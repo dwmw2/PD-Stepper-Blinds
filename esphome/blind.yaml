@@ -135,7 +135,7 @@ time:
                  // Sunset or sunrise.
                  ESP_LOGI("sun", "Sun is now %s", sunup ? "up" : "down");
 
-                 if (sunup && (t.hour > 8 || (t.hour == 7 && t.minute >= 30))) {
+                 if (sunup && (t.hour >= 8 || (t.hour == 7 && t.minute >= 30))) {
                     id(pd_blinds)->make_call().set_command_open().perform();
                  } else {
                     id(pd_blinds)->make_call().set_command_close().perform();
