@@ -271,7 +271,7 @@ stepper:
          level: INFO
          format: "Motor stalled at %f in direction %d, travel %s!"
          args: [ "id(encoder)->get_state()", "id(motor)->current_direction",
-               "cover_operation_to_str(id(pd_blinds)->current_operation)" ]
+               "LOG_STR_ARG(cover_operation_to_str(id(pd_blinds)->current_operation))" ]
       - lambda: |
           if (id(motor).current_direction == -(${motor_direction})) {
              id(need_rehome_) = false;
@@ -394,7 +394,7 @@ binary_sensor:
          level: INFO
          format: "Reed switch on at %f in direction %d, travel %s!"
          args: [ "id(encoder)->get_state()", "id(motor)->current_direction",
-                 "cover_operation_to_str(id(pd_blinds)->current_operation)" ]
+                 "LOG_STR_ARG(cover_operation_to_str(id(pd_blinds)->current_operation))" ]
      - lambda: |
          // If we hit the reed switch while travelling upwards, stop the motor and reset the home position.
          if (id(motor).current_direction == -(${motor_direction})) {
@@ -412,7 +412,7 @@ binary_sensor:
          level: INFO
          format: "Reed switch off at %f in direction %d, travel %s!"
          args: [ "id(encoder)->get_state()", "id(motor)->current_direction",
-                 "cover_operation_to_str(id(pd_blinds)->current_operation)" ]
+                 "LOG_STR_ARG(cover_operation_to_str(id(pd_blinds)->current_operation))" ]
 
 as5600:
   slow_filter: 16x
@@ -443,9 +443,9 @@ sensor:
              if (id(home_resetting_)) {
                id(home_resetting_) = false;
                id(sensored_home_pos) = id(encoder)->get_state();
-               ESP_LOGI("cover", "idle at %d (home reset)", id(encoder_tracking_)[1]);
+               ESP_LOGI("cover", "idle at %ld (home reset)", id(encoder_tracking_)[1]);
              } else {
-               ESP_LOGI("cover", "idle at %d", id(encoder_tracking_)[1]);
+               ESP_LOGI("cover", "idle at %ld", id(encoder_tracking_)[1]);
              }
              id(motor)->set_max_speed(${max_speed});
              id(pd_blinds)->current_operation = COVER_OPERATION_IDLE;
@@ -457,7 +457,7 @@ sensor:
           id(encoder_tracking_)[0] = curr;
           id(encoder_tracking_)[1] += delta;
           if (id(encoder_tracking_)[1] < id(sensored_home_pos)) {
-             ESP_LOGI("home", "Adjusted to %d", id(encoder_tracking_)[1]);
+             ESP_LOGI("home", "Adjusted to %ld", id(encoder_tracking_)[1]);
              id(sensored_home_pos) = id(encoder_tracking_)[1];
           }
           ESP_LOGD("angle", "Old %d new %d delta %d now %d home %d", id(encoder_tracking_)[0], curr, delta,
@@ -530,7 +530,7 @@ cover:
           int32_t wantpos = id(sensored_home_pos);
           int32_t posdelta = wantpos - id(encoder)->get_state();
           int32_t stepdelta = ((posdelta * 200 * ${microsteps} * ${motor_direction}) + 2048) / 4096;
-          ESP_LOGI("cover", "From %f to open (%f to %d) is delta %d, %d steps. Step %d -> %d",
+          ESP_LOGI("cover", "From %f to open (%f to %ld) is delta %ld, %ld steps. Step %ld -> %ld",
                             id(pd_blinds)->position, id(encoder)->get_state(), wantpos, posdelta, stepdelta,
                             id(motor)->current_position, id(motor)->current_position + stepdelta);
           id(home_resetting_) = false;
@@ -541,7 +541,7 @@ cover:
           int32_t wantpos = id(sensored_home_pos) + ${encoder_closed_pos};
           int32_t posdelta = wantpos - id(encoder)->get_state();
           int32_t stepdelta = ((posdelta * 200 * ${microsteps} * ${motor_direction}) + 2048) / 4096;
-          ESP_LOGI("cover", "From %f to closed (%f to %d) is delta %d, %d steps. Step %d -> %d",
+          ESP_LOGI("cover", "From %f to closed (%f to %ld) is delta %ld, %ld steps. Step %ld -> %ld",
                             id(pd_blinds)->position,  id(encoder)->get_state(), wantpos, posdelta, stepdelta,
                             id(motor)->current_position, id(motor)->current_position + stepdelta);
           id(home_resetting_) = false;
@@ -551,7 +551,7 @@ cover:
           int32_t wantpos = id(sensored_home_pos) + (1.0 - pos) * ${encoder_closed_pos};
           int32_t posdelta = wantpos - id(encoder)->get_state();
           int32_t stepdelta = ((posdelta * 200 * ${microsteps} * ${motor_direction}) + 2048) / 4096;
-          ESP_LOGI("cover", "From %f to %f (%f to %d) is delta %d, %d steps. Step %d -> %d",
+          ESP_LOGI("cover", "From %f to %f (%f to %ld) is delta %ld, %ld steps. Step %ld -> %ld",
                             id(pd_blinds)->position, pos, id(encoder)->get_state(), wantpos, posdelta, stepdelta,
                             id(motor)->current_position, id(motor)->current_position + stepdelta);
           id(home_resetting_) = false;
